@@ -1,6 +1,9 @@
 import os
 import jinja2
 import webapp2
+import uuid
+
+from google.appengine.api import memcache
 from google.appengine.api import users
 
 from models.topic import Topic
@@ -35,6 +38,28 @@ class BaseHandler(webapp2.RequestHandler):
             params["user"] = user
         else:
             params["login_url"]= users.create_login_url("/")
+
+        template = jinja_env.get_template(view_filename)
+        return self.response.out.write(template.render(params))
+
+    def render_template_with_csrf(self, view_filename, params=None):
+        if not params:
+            params = {}
+
+        piskotek = self.request.cookies.get("zakon-o-piskotkih")
+        if piskotek:
+            params["piskotek"] = True
+
+        user = users.get_current_user()
+        if user:
+            params["logout_url"] = users.create_logout_url("/")
+            params["user"] = user
+        else:
+            params["login_url"] = users.create_login_url("/")
+
+        csrf_token = str(uuid.uuid4())
+        memcache.add(key=csrf_token, value=True, time=600)
+        params["csrf_token"] = csrf_token
 
         template = jinja_env.get_template(view_filename)
         return self.response.out.write(template.render(params))

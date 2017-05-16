@@ -32,33 +32,22 @@
 {% for comment in comments|sort(attribute='created') %}
 
     <div class="panel panel-warning">
-        <div class="panel-heading">{{ comment.author_email }}</div>
+        <div class="panel-heading">{{ comment.author_email }} on {{ comment.created.strftime("%d.%m.%Y at %H:%M") }}</div>
         <div class="panel-body">
             <p>{{ comment.content }}</p>
         </div>
-         <table class="table">
-              <tr>
-                  <th> Comment Author:</th>
-                  <th> Comment Created:</th>
-                  <th> Comment Updated:</th>
-              </tr>
-              <tr>
-                  <td>{{ comment.author_email }}</td>
-                  <td>{{ comment.created }}</td>
-                  <td>{{ comment.updated }}</td>
-              </tr>
-        </table>
     </div>
 
 {% endfor %}
 
     <div class="row">
         <div class="col-lg-6 col-md-6">
-            <form method="post">
+            <form action="/topic-details/{{topic.key.id()}}/comment/add" method="post" >
+                <input type="hidden" name="csrf_token" value="{{csrf_token}}">
 
                 <div class="form-group">
                     <label>Comment</label>
-                    <textarea name="comment" class="form-control" rows="1" required>
+                    <textarea name="comment" class="form-control" rows="2" required>
                     </textarea>
                 </div>
 

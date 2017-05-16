@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block naslov %} Topic Details {% endblock %}
+
+
+{% block vsebina %}
+
+<div class="jumbotron">
+    <h1> Ninja Tech Forum </h1>
+    <p>Welcome to Ninja Tech Forum. Coming soon! </p>
+</div>
+
+<div class="panel panel-info">
+  <div class="panel-heading">{{ topic.title }}</div>
+    <div class="panel-body">
+        <p>{{ topic.content }}</p>
+    </div>
+  <table class="table">
+      <tr>
+          <th> Topic Author:</th>
+          <th> Topic Created:</th>
+          <th> Topic Updated:</th>
+      </tr>
+      <tr>
+          <td>{{ topic.author_email }}</td>
+          <td>{{ topic.created }}</td>
+          <td>{{ topic.updated }}</td>
+      </tr>
+  </table>
+</div>
+
+{% for comment in comments|sort(attribute='created') %}
+
+    <div class="panel panel-warning">
+        <div class="panel-heading">{{ comment.author_email }}</div>
+        <div class="panel-body">
+            <p>{{ comment.content }}</p>
+        </div>
+         <table class="table">
+              <tr>
+                  <th> Comment Author:</th>
+                  <th> Comment Created:</th>
+                  <th> Comment Updated:</th>
+              </tr>
+              <tr>
+                  <td>{{ comment.author_email }}</td>
+                  <td>{{ comment.created }}</td>
+                  <td>{{ comment.updated }}</td>
+              </tr>
+        </table>
+    </div>
+
+{% endfor %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <form method="post">
+
+                <div class="form-group">
+                    <label>Comment</label>
+                    <textarea name="comment" class="form-control" rows="1" required>
+                    </textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

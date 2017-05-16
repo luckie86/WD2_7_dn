@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block naslov %} Glavna stran {% endblock %}
+
+
+{% block vsebina %}
+
+<div class="jumbotron">
+    <h1> Ninja Tech Forum </h1>
+    <p>Welcome to Ninja Tech Forum. Coming soon! </p>
+</div>
+
+
+<div class="table-responsive">
+  <table class="table table-hover">
+    <tr>
+        <th> Title:</th>
+        <th> Updated: </th>
+        <th> Author Email: </th>
+    </tr>
+
+{% for topic in topics|sort(attribute='created', reverse = True) %}
+      <tr>
+          <td> <a href="/topic-details/{{ topic.key.id() }}"> {{ topic.title }}</a></td>
+          <td> {{ topic.updated }} </td>
+          <td> {{ topic.author_email }} </td>
+      </tr>
+{% endfor %}
+
+  </table>
+</div>
+
+{% endblock %}
